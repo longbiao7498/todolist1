@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <DatePicker
+        android:id="@+id/select_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></DatePicker>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/set_time_datepickerdialog"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="20dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            android:text="Set Time"/>
+        <TextView
+            android:id="@+id/confirm_datepickerdialog"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            android:text="OK"/>
+        <TextView
+            android:id="@+id/cancel_datepickerdialog"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_toLeftOf="@id/confirm_datepickerdialog"
+            android:layout_margin="20dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            android:text="Cancel"/>
+    </RelativeLayout>
+
+</LinearLayout>

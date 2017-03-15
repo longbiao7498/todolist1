@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">MaterialTest</string>
+    <string name="title_activity_add1">AddActivity1</string>
+    <string name="action_settings">Settings</string>
+    <string name="repeat_no_repeat">不重复</string>
+    <string name="repeat_everyday">每天</string>
+    <string name="repeat_every_month">每月</string>
+    <string name="repeat_every_week">每周</string>
+    <string name="repeat_every_year">每年</string>
+    <string name="choose_repeat">重复</string>
+
+    <string name="notification_nothing">不通知</string>
+    <string name="notification_no_voice">通知静音</string>
+    <string name="notification_voice">通知响铃</string>
+    <string name="choose_notification">通知</string>
+
+    <string name="save_data">保存</string>
+    <string name="no_save_data">不保存</string>
+    <string name="savedata_message">你要保存这个待办事项吗？</string>
+
+    <string name="time_type_text_morning">早晨</string>
+    <string name="time_type_text_forenoon">上午</string>
+    <string name="time_type_text_noon">中午</string>
+    <string name="time_type_text_afternoon">下午</string>
+    <string name="time_type_text_evenfall">傍晚</string>
+    <string name="time_type_text_evening">晚上</string>
+    <string name="time_type_text_notimeanddata">没有时间</string>
+    <!--datax应该是date，正式版再改-->
+    <string name="time_type_text_notime">No Time</string>
+
+    <string name="choose_priority">优先级</string>
+    <string name="priority_1">优先级1</string>
+    <string name="priority_2">优先级2</string>
+    <string name="priority_3">优先级3</string>
+    <string name="priority_4">优先级4</string>
+    <string name="priority_5">优先级5</string>
+
+    <string name="choose_operation">操作</string>
+    <string name="operation_open_email">邮件</string>
+    <string name="operation_open_call">电话</string>
+    <string name="operation_open_appNotification">app通知</string>
+    <string name="operation_open_message">短信</string>
+    <string name="operation_open_link">打开链接</string>
+    <string name="operation_nothing">没有操作</string>
+
+    <string name="remarks">备注</string>
+    <string name="remarks_add">添加备注</string>
+
+    <string name="category">类别</string>
+    <string name="default_category">默认</string>
+
+    <string name="choose_extraData">附件</string>
+    <string name="extradata_email">邮件</string>
+    <string name="extradata_message">短信</string>
+    <string name="extradata_app_notification">app通知</string>
+    <string name="extradata_phone_number">电话</string>
+    <string name="extradata_image">图片</string>
+    <string name="extradata_text">赋值文本</string>
+    <string name="extradata_nothing">没有附件</string>
+
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="set_time">设置时间</string>
+
+    <string name="time_section_today">今天</string>
+    <string name="time_section_tomorrow">明天</string>
+    <string name="time_section_in_week">一周类</string>
+    <string name="time_section_furture">未来</string>
+</resources>

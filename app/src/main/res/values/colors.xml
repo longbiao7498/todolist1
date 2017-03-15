@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#e20639</color>
+    <color name="colorPrimaryDark">#f2073a</color>
+    <color name="colorAccent">#f59917</color>
+    <color name="background">#1111</color>
+    <color name="addviewbackground">#fff</color>
+    <color name="saveButton">#0aec2f</color>
+    <color name="deleteButton">#f90808</color>
+    <color name="cancelButton">#999597</color>
+    <color name="mainTextColor">#0a0909</color>
+    <color name="mainTextColor1">#999597</color>
+    <color name="pointtextColor">#f59917</color>
+    <color name="addActivityIconColor">#b1b0b0</color>
+</resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="55dp"
+        android:textColor="@color/pointtextColor"
+        android:textSize="20sp"
+        android:layout_marginTop="60dp"
+        android:text="Task"/>
+    <EditText
+        android:id="@+id/activity_add_main_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:maxLength="40"
+        android:textSize="28sp"
+        android:maxLines="2"
+        android:hint="what do you want to do?"/>
+    <LinearLayout
+        android:id="@+id/layout_todoTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
+            android:textColor="@color/pointtextColor"
+            android:textSize="20sp"
+            android:text="Time"/>
+        <TextView
+            android:id="@+id/activity_add_todoTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
+            android:textSize="18sp"
+            android:text="@string/time_type_text_notimeanddata"/>
+    </LinearLayout>
+
+</LinearLayout>

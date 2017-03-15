@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_undo"
+            android:icon="@drawable/ic_doing_1"
+            android:title="Un do"/>
+        <item
+            android:id="@+id/nav_done"
+            android:icon="@drawable/ic_have_done3"
+            android:title="Done"/>
+    </group>
+    <item android:title="Source">
+        <menu >
+            <item
+                android:id="@+id/nav_call"
+                android:icon="@drawable/ic_phone_black_24dp"
+                android:title="call"/>
+            <item
+                android:id="@+id/nav_people"
+                android:icon="@drawable/ic_message_1"
+                android:title="message"/>
+            <item
+                android:id="@+id/nav_location"
+                android:icon="@drawable/ic_confirmation_number_black_24dp"
+                android:title="App Notification"/>
+            <item
+                android:id="@+id/nav_mail"
+                android:icon="@drawable/ic_local_post_office_black_24dp"
+                android:title="E-mail"/>
+        </menu>
+    </item>
+    <item android:title="More">
+        <menu >
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share_1"
+                android:title="Share"/>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_settings_1"
+                android:title="Settings"/>
+        </menu>
+    </item>
+</menu>
