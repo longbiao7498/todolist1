@@ -64,6 +64,6 @@
 
     <string name="time_section_today">今天</string>
     <string name="time_section_tomorrow">明天</string>
-    <string name="time_section_in_week">一周类</string>
+    <string name="time_section_in_week">一周内</string>
     <string name="time_section_furture">未来</string>
 </resources>

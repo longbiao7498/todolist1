@@ -32,4 +32,8 @@ public class TodoItem_constants {
 
     public static final int ISREPEAT_1=1;
     public static final int ISREPEAT_0=0;
+    public static final int EVERYDAY=1;
+    public static final int EVERYWEEK=2;
+    public static final int EVERYMONTH=3;
+    public static final int EVERYYEAR=4;
 }

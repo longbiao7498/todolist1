@@ -128,29 +128,18 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getData();
                 //判断是否重复，再调用不同的方法来添加数据；，暂时不做处理；
-                AddTool.addDate(mainText,category,timeType,longTime,notification,priority,isRepeat,0,
-                        operationType,operationData,extraDataType,extraData,remarks,dbHelper,AddActivity.this);
+                if(isRepeat==TodoItem_constants.ISREPEAT_1){
+                    AddTool.addDateRepeat(mainText,category,timeType,longTime,repeatData,notification,
+                            priority,operationType,operationData,extraDataType,extraData,remarks,dbHelper,AddActivity.this);
+                }else{
+                    AddTool.addDate(mainText,category,timeType,longTime,notification,priority,isRepeat,0,
+                            operationType,operationData,extraDataType,extraData,remarks,dbHelper,AddActivity.this);
+                }
+
                 finish();
             }
         });
 
-//        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-//        imm.showSoftInputFromInputMethod(mainTextText.getWindowToken(),0);
-        //imm.hideSoftInputFromWindow(mainTextText.getWindowToken(),0);
-
-//        mainTextText.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                EditText mainTextt=(EditText)v;
-//                if(mainTextt.getText().equals("")){
-//                    floatingActionButton.setBackgroundColor(getResources().getColor(R.color.mainTextColor1));
-//                }
-//                else{
-//                    floatingActionButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-//                }
-//                return false;
-//            }
-//        });
         todoTimeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,9 +250,9 @@ public class AddActivity extends AppCompatActivity {
         }else {
             isRepeat=0;
         }
-        if(isRepeat==1){
-            repeatData=repeatDataText.getText().toString();
-        }
+//        if(isRepeat==1){
+//            repeatData=repeatDataText.getText().toString();
+//        }//////
         if(!TextUtils.isEmpty(remarksText.getText())){
             remarks=remarksText.getText().toString();
         }
@@ -308,10 +297,13 @@ public class AddActivity extends AppCompatActivity {
         builder.create().show();
     }
     private void setIsRepeat(){
-        final String items2[]={getString(R.string.repeat_no_repeat),getString(R.string.repeat_everyday),
-                getString(R.string.repeat_every_week),getString(R.string.repeat_every_month),
-                getString(R.string.repeat_every_year)};
-        final String items1[]={getString(R.string.repeat_no_repeat)};
+        final String everyday=getString(R.string.repeat_everyday);
+        final String everyweek=getString(R.string.repeat_every_week);
+        final String everymonth=getString(R.string.repeat_every_month);
+        String everyyear=getString(R.string.repeat_every_year);
+        String noRepeat=getString(R.string.repeat_no_repeat);
+        final String items2[]={noRepeat,everyday,everyweek,everymonth,everyyear};
+        final String items1[]={noRepeat};
         final String items[];
         if(timeType==0){
             items=items1;
@@ -333,10 +325,21 @@ public class AddActivity extends AppCompatActivity {
                     repeatData=null;
                     isRepeatSwitch.setChecked(false);
                 }else {
-                    isRepeat=TodoItem_constants.ISREPEAT_1;
-                    repeatData=items[which];
+                    if(items[which].equals(everyday)){
+                        repeatData=""+TodoItem_constants.EVERYDAY;
+                    }
+                    if(items[which].equals(everyweek)){
+                        repeatData=""+TodoItem_constants.EVERYWEEK;
+                    }
+                    if(items[which].equals(everymonth)){
+                        repeatData=""+TodoItem_constants.EVERYMONTH;
+                    }
+                    if(items[which].equals(everymonth)){
+                        repeatData=""+TodoItem_constants.EVERYYEAR;
+                    }
                     isRepeatSwitch.setChecked(true);
                 }
+                isRepeat=TodoItem_constants.ISREPEAT_1;
                 repeatDataText.setText(items[which]);
                 dialog.dismiss();
             }
