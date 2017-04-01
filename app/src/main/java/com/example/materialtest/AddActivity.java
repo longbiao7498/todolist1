@@ -714,6 +714,7 @@ public class AddActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd EE ");
         todoTimeText.setText(df.format(calendar.getTime())+todoTime);
         longTime=calendar.getTimeInMillis();
+        String name="test commit and push";
 
     }
 
