@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"></DatePicker>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/set_time_datepickerdialog"
             android:layout_width="60dp"

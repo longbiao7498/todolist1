@@ -46,7 +46,7 @@ public class AddTool {
             db.insert("MainList",null,values);
             sendDateChangeBroadcast(mContext);
     }
-    public static void addDateRepeat(String mainText,int category,int timeType,long longTime,String repeatData,
+    public static void addDateRepeat(String mainText,int category,int timeType,long todoTime,String repeatData,
                                      int notification,int priority,int operationType,
                                      String operationData, int extraDataType, String extraData,String remarks,//12
                                      MyDatabaseHelper dbHelper, Context mContext){
@@ -55,10 +55,9 @@ public class AddTool {
         Calendar calendar=Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         double updateTime=(double)calendar.getTimeInMillis();
-        //values.put("repeatNum",)
         values.put("mainText",mainText);
         values.put("isDone",0);
-        values.put("todoTime",""+longTime);
+        values.put("todoTime",""+todoTime);
         values.put("timeType",timeType);
         values.put("repeatData",repeatData);
         values.put("updateTime",updateTime);
@@ -78,7 +77,7 @@ public class AddTool {
         if(cursor!=null&&cursor.moveToFirst()){
             int repeatNum=cursor.getInt(cursor.getColumnIndex("repeatNum"));////时效性
             Calendar calendar1=Calendar.getInstance();
-            calendar1.setTimeInMillis(longTime);
+            calendar1.setTimeInMillis(todoTime);
             Calendar calendar2=Calendar.getInstance();
             calendar2.setTimeInMillis(System.currentTimeMillis());
             calendar2.add(Calendar.DAY_OF_MONTH,7);
@@ -87,7 +86,8 @@ public class AddTool {
             calendar2.set(Calendar.SECOND,1);
             Long endTime=calendar2.getTimeInMillis();//////////
             for(int i=0;i<8;i++){
-                AddTool.addDate(mainText,category,timeType,calendar1.getTimeInMillis(),notification,priority, TodoItem_constants.ISREPEAT_1,repeatNum,
+                long longTime=calendar1.getTimeInMillis();
+                AddTool.addDate(mainText,category,timeType,longTime,notification,priority, TodoItem_constants.ISREPEAT_1,repeatNum,
                             operationType,operationData,extraDataType,extraData,remarks,dbHelper,mContext);
                 if(longTime>endTime){
                     break;
@@ -113,12 +113,7 @@ public class AddTool {
         }
         cursor.close();
     }
-    private static  int  repeatListAddToMainlist(double updateTime,Context mContext,MyDatabaseHelper dbHelper){
-        SQLiteDatabase db=dbHelper.getWritableDatabase();
 
-
-        return 0;
-    }
     private static void sendDateChangeBroadcast(Context mContext){
         Intent intent=new Intent("com.example.broadcast.DATE_CHANGE");
         mContext.sendBroadcast(intent);

@@ -4,29 +4,22 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -34,40 +27,22 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.materialtest.constants.Database_constants;
 import com.example.materialtest.constants.TimeType_constants;
 import com.example.materialtest.constants.TodoItem_constants;
-import com.example.materialtest.tool.AddTool;
+import com.example.materialtest.tool.DataTransformTool;
+import com.example.materialtest.tool.QueryTool;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 
-
 /**
- * Created by 龙标F on 2017/2/22 0022.
+ * Created by 龙标F on 2017/3/17 0017.
  */
 
-public class AddActivity extends AppCompatActivity {
-    private int timeType=0;////
-    private long longTime=0;
-    private int isRepeat=0;
-    private String repeatData=null;
-    private String mainText=null;
-    private int category=0;///////全部改变为category
-    private int notification=1;
-    private int priority=1;////////
-    private int operationType=0;
-    private String remarks=null;/////
-    private String operationData=null;
-    private int extraDataType=0;
-    private String extraData=null;
-    private MyDatabaseHelper dbHelper;
-    private DatePickerDialog mDataPicker;
-    private TimePickerDialog mTimePicker;
-
+public class EditActivity extends AppCompatActivity {
     private EditText mainTextText;
     private TextView todoTimeText;
     private TextView notificationText;
@@ -88,20 +63,36 @@ public class AddActivity extends AppCompatActivity {
     private RelativeLayout priorityLayout;
     private RelativeLayout remarksLayout;
     private RelativeLayout categoryLayout;
+
+    private int repeatNum=0;
+    private int timeType= TimeType_constants.NOTIME;////
+    private long longTime=0;
+    private int isRepeat=TodoItem_constants.ISREPEAT_0;
+    private String repeatData=null;
+    private String mainText=null;
+    private int category=TodoItem_constants.CATEGORY_DEFAULT;
+    private int notification=TodoItem_constants.NOTIFICATIONT_TYPE_NOTHING;
+    private int priority=TodoItem_constants.PRIORITY_5;////////
+    private int operationType=TodoItem_constants.OPERATIONTYPE_NOTHING;
+    private String remarks=null;/////
+    private String operationData=null;
+    private int extraDataType=TodoItem_constants.EXTRADATATYPE_NOTHING;
+    private String extraData=null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        dbHelper=new MyDatabaseHelper(this,"ListData.db",null, Database_constants.DATABASEVERSION);
+        Intent intent=getIntent();
+        int id=intent.getIntExtra("id",0);
+        MyDatabaseHelper dbHelper=new MyDatabaseHelper(this,"ListData.db",null, Database_constants.DATABASEVERSION);
         Toolbar toolbar=(Toolbar)findViewById(R.id.activity_add_toolbar);
-        CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
         setSupportActionBar(toolbar);
         ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         final FloatingActionButton floatingActionButton=(FloatingActionButton)findViewById(R.id.activity_add_fab);
-
         mainTextText=(EditText) findViewById(R.id.activity_add_main_text);
         todoTimeText=(TextView)findViewById(R.id.activity_add_todoTime);
         notificationText=(TextView)findViewById(R.id.activity_add_notification);
@@ -114,6 +105,38 @@ public class AddActivity extends AppCompatActivity {
         remarksText=(EditText)findViewById(R.id.activity_add_remarks);
         categoryText=(TextView)findViewById(R.id.activity_add_category); //11,比Layout多两个switch，mainText没有Layout
 
+        ///8//或许这里也不需要Layout作为外部的触摸区域区分吧
+        init(id,dbHelper);
+        View.OnClickListener onClickListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.layout_notification:
+                        setNotification();
+                        break;
+                    case R.id.layout_priority:
+                        setPriority();
+                        break;
+                    case R.id.layout_extraData:
+                        setExtraData();
+                        break;
+                    case R.id.layout_operation:
+                        setOperation();
+                        break;
+                    case R.id.layout_Category:
+                        setCategory();//////undo
+                        break;
+                    case R.id.layout_todoTime:
+                        showTimeandDate();
+                        break;
+                    case R.id.layout_Repeat:
+                        setIsRepeat();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
         todoTimeLayout=(LinearLayout)findViewById(R.id.layout_todoTime);
         notificationLayout=(RelativeLayout)findViewById(R.id.layout_notification);
         repeatLayout=(RelativeLayout)findViewById(R.id.layout_Repeat);
@@ -121,143 +144,71 @@ public class AddActivity extends AppCompatActivity {
         extraDataLayout=(RelativeLayout)findViewById(R.id.layout_extraData);
         priorityLayout=(RelativeLayout)findViewById(R.id.layout_priority);
         remarksLayout=(RelativeLayout)findViewById(R.id.layout_remarks);
-        categoryLayout=(RelativeLayout)findViewById(R.id.layout_Category);///8//或许这里也不需要Layout作为外部的触摸区域区分吧
-
-        ///2017/3/12日，接下里要先把时间的事情设置搞定，然后换用另外的Dialog处理方式，然后加入分类，优先级，备注。
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getData();
-                saveData();
-                finish();
-            }
-        });
-
-        todoTimeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimeandDate();
-            }
-        });
-        notificationLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setNotification();
-            }
-        });
-        repeatLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setIsRepeat();
-            }
-        });
-        isRepeatSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isRepeatSwitch.isChecked()){
-                    isRepeat=1;
-                }else{
-                    isRepeat=0;
-                }
-            }
-        });
-        priorityLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setPriority();
-            }
-        });
-        operationLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setOperation();
-            }
-        });
-        extraDataLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setExtraData();
-            }
-        });
-        View.OnClickListener onClickListener=new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()){
-
-                }
-            }
-        };
+        categoryLayout=(RelativeLayout)findViewById(R.id.layout_Category);
+        todoTimeLayout.setOnClickListener(onClickListener);
+        notificationLayout.setOnClickListener(onClickListener);
+        repeatLayout.setOnClickListener(onClickListener);
+        operationLayout.setOnClickListener(onClickListener);
+        extraDataLayout.setOnClickListener(onClickListener);
+        priorityLayout.setOnClickListener(onClickListener);
+        categoryLayout.setOnClickListener(onClickListener);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case android.R.id.home:
-                beforeFinish();
-                break;
-        }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
+    
+    private void init(int id ,MyDatabaseHelper dbHelper){//init all data from database
+        ToDoItemComplex toDoItemComplex=QueryTool.querayItemData(id,dbHelper);
+        repeatNum=toDoItemComplex.getRepeatNum();
+        mainText=toDoItemComplex.getMainText();
+        longTime=toDoItemComplex.getLongTime();
+        timeType=toDoItemComplex.getTimeType();
+        isRepeat=toDoItemComplex.getIsRepeat();
+        repeatData=toDoItemComplex.getRepeatData();
+        category=toDoItemComplex.getCategory();
+        notification=toDoItemComplex.getNotification();
+        priority=toDoItemComplex.getPriority();
+        operationType=toDoItemComplex.getOperationType();
+        operationData=toDoItemComplex.getOperationData();
+        extraDataType=toDoItemComplex.getExtraDataType();
+        extraData=toDoItemComplex.getExtraData();
+        remarks=toDoItemComplex.getRemarks();//14
 
-    @Override
-    public void onBackPressed() {
-        beforeFinish();
-    }
-    private  void beforeFinish(){
-        if(!TextUtils.isEmpty(mainTextText.getText())){
-            AlertDialog.Builder builder=new AlertDialog.Builder(AddActivity.this);
-            builder.setCancelable(false);
-            builder.setMessage(getString(R.string.savedata_message));
-            builder.setPositiveButton(getString(R.string.save_data), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    getData();
-                    saveData();
-                    dialog.dismiss();
-                    finish();
-                }
-            });
-            builder.setNegativeButton(getString(R.string.no_save_data), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    finish();
-                }
-            });
-            builder.create().show();
-        }else {
-            finish();
-        }
-    }
-
-    private void getData(){
-        mainText=mainTextText.getText().toString();
-        if(isRepeatSwitch.isChecked()){
-            isRepeat=1;
-        }else {
-            isRepeat=0;
-        }
-        if(!TextUtils.isEmpty(remarksText.getText())){
-            remarks=remarksText.getText().toString();
-        }
-        //还有等级，操作以及附件的类型与数据要赋值，暂时不赋值；
-    }
-    private void saveData(){
-        //判断是否重复，再调用不同的方法来添加数据；，暂时不做处理；
-        if(isRepeat==TodoItem_constants.ISREPEAT_1){
-            AddTool.addDateRepeat(mainText,category,timeType,longTime,repeatData,notification,
-                    priority,operationType,operationData,extraDataType,extraData,remarks,dbHelper,AddActivity.this);
+        mainTextText.setText(mainText);
+        todoTimeText.setText(DataTransformTool.longTimeToToDoTime(longTime,timeType,EditActivity.this));
+        notificationText.setText(DataTransformTool.notificationTransform(notification,EditActivity.this));
+        priorityText.setText(DataTransformTool.priorityTransform(priority,EditActivity.this));
+        extraDataText.setText(DataTransformTool.extraDataTransform(extraDataType,extraData,EditActivity.this));
+        repeatDataText.setText(DataTransformTool.repeatDataTransform(repeatData,isRepeat,EditActivity.this));
+        if(isRepeat==1){
+            isRepeatSwitch.setChecked(true);
         }else{
-            AddTool.addDate(mainText,category,timeType,longTime,notification,priority,isRepeat,0,
-                    operationType,operationData,extraDataType,extraData,remarks,dbHelper,AddActivity.this);
+            isRepeatSwitch.setChecked(false);
         }
+        operationDataText.setText(DataTransformTool.operationDataTransform(operationType,operationData,EditActivity.this));
+        if(operationType==TodoItem_constants.OPERATIONTYPE_NOTHING){
+            isOperationSwitch.setChecked(false);
+        }else{
+            isOperationSwitch.setChecked(true);
+        }
+        remarksText.setText(remarks);
+        categoryText.setText(DataTransformTool.categoryTransform(category,EditActivity.this));
+
 
     }
+    private void getData(){//get data
 
+    }
+    private void saveData(){//save data to database
+
+    }
     private void setNotification(){
         final String noVoice=getString(R.string.notification_no_voice);
         final String nothing=getString(R.string.notification_nothing);
@@ -458,15 +409,13 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
-
-
     private void showTimeandDate(){
         final AlertDialog alertDialog=new AlertDialog.Builder(this).create();
-        final View dialogView= LayoutInflater.from(AddActivity.this).inflate(R.layout.simpletime_picker,null);
+        final View dialogView= LayoutInflater.from(EditActivity.this).inflate(R.layout.simpletime_picker,null);
         alertDialog.setView(dialogView);
         alertDialog.show();
         WindowManager.LayoutParams params=alertDialog.getWindow().getAttributes();
-        float density = getDensity(AddActivity.this);
+        float density = getDensity(EditActivity.this);
         params.width=1000;
         params.height=1080;
         params.gravity= Gravity.CENTER;
@@ -544,7 +493,7 @@ public class AddActivity extends AppCompatActivity {
     private void showDateAndTimeDialog() {
         final Calendar calendar=Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        DatePickerDialog datePickerDialog=new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog=new DatePickerDialog(EditActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
@@ -561,7 +510,7 @@ public class AddActivity extends AppCompatActivity {
 
 
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        final View dialogView = LayoutInflater.from(AddActivity.this)
+        final View dialogView = LayoutInflater.from(EditActivity.this)
                 .inflate(R.layout.custom_text,null);
         dialog.setView(dialogView);
         TextView confirmDatePickerDialog=(TextView) dialogView.findViewById(R.id.confirm_datepickerdialog);
@@ -603,7 +552,7 @@ public class AddActivity extends AppCompatActivity {
                 Calendar calendar1 = Calendar.getInstance();
                 calendar1.setTimeInMillis(System.currentTimeMillis());
                 final TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(AddActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(EditActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -639,7 +588,7 @@ public class AddActivity extends AppCompatActivity {
         Calendar calendar1 = Calendar.getInstance();
         calendar1.setTimeInMillis(System.currentTimeMillis());
         final TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(AddActivity.this, new TimePickerDialog.OnTimeSetListener() {
+        mTimePicker = new TimePickerDialog(EditActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 Calendar calendar = Calendar.getInstance();
@@ -716,6 +665,4 @@ public class AddActivity extends AppCompatActivity {
         longTime=calendar.getTimeInMillis();
 
     }
-
-
 }

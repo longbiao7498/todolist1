@@ -24,7 +24,7 @@
             <include layout="@layout/activity_add_head"
                 app:layout_collapseMode="pin" />
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/activity_add_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"

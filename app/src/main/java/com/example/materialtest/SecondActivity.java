@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.materialtest.dialog.SimpleDataDialog;
 import com.example.materialtest.tool.PackageTool;
 
 import java.text.SimpleDateFormat;
@@ -121,6 +122,7 @@ public class SecondActivity extends AppCompatActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.restore:
+                test();
                 checkDate();
                 break;
             case R.id.zoom:
@@ -249,6 +251,15 @@ public class SecondActivity extends AppCompatActivity {
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         return dm.density;
+    }
+    public void test(){
+        SimpleDataDialog simpleDataDialog=new SimpleDataDialog(SecondActivity.this, new SimpleDataDialog.SimpleDataDialogListener() {
+            @Override
+            public void onTimeSet(long longTime, int timeType) {
+                Toast.makeText(SecondActivity.this,timeType+"",Toast.LENGTH_SHORT).show();
+            }
+        });
+        simpleDataDialog.show();
     }
 
 

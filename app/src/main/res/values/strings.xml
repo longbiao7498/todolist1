@@ -66,4 +66,15 @@
     <string name="time_section_tomorrow">明天</string>
     <string name="time_section_in_week">一周内</string>
     <string name="time_section_furture">未来</string>
+
+    <string name="simpletimepicker_today_sometime">Today SomeTime</string>
+    <string name="simpletimepicker_tomorrow_sometime">Tomorrow SomeTime</string>
+    <string name="simpletimepicker_tomorrow_afternoon">Tomorrow Afternoon</string>
+    <string name="simpletimepicker_tomorrow_evening">Tomorrow Evening</string>
+    <string name="simpletimepicker_tomorrow">Tomorrow</string>
+    <string name="simpletimepicker_next_week">Next Week</string>
+    <string name="simpletimepicker_no_time">No Time</string>
+    <string name="simpletimepicker_picker_time">Picker Time</string>
+
+
 </resources>

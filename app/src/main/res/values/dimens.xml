@@ -5,4 +5,7 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="simple_time_picker_margin_horizontal">20dp</dimen>
+    <dimen name="simple_time_picker_margin_vertical">10dp</dimen>
+    <dimen name="simple_time_picker_text_size">13sp</dimen>
 </resources>

@@ -60,7 +60,7 @@ public class SecondActivityAdapter extends RecyclerView.Adapter<SecondActivityAd
             public void onClick(View v) {
                 int position=holder.getAdapterPosition();
                 TodoItem todoItem=todoItemList.get(position);
-                Intent intent=new Intent(mContext,CheckActivity.class);
+                Intent intent=new Intent(mContext,EditActivity.class);
                 intent.putExtra("id",todoItem.getId());
                 mContext.startActivity(intent);
             }

@@ -36,4 +36,6 @@ public class TodoItem_constants {
     public static final int EVERYWEEK=2;
     public static final int EVERYMONTH=3;
     public static final int EVERYYEAR=4;
+
+    public static final int CATEGORY_DEFAULT=0;
 }

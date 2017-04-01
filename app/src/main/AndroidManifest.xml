@@ -29,6 +29,8 @@
             android:label=""
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".CheckActivity" />
+        <activity android:name=".EditActivity"
+            android:label=""/>
     </application>
 
 </manifest>
